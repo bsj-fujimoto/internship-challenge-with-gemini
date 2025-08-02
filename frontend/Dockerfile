@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
+# Install bash and fish
+RUN apk add bash fish
+
 # Install dependencies
 RUN npm install
 

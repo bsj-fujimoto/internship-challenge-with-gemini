@@ -14,39 +14,62 @@
 
 - Docker と Docker Compose がインストールされていること
 - Git がインストールされていること
+- Make がインストールされていること（macOS/Linux標準、Windows の場合は WSL2 推奨）
 
 ### インストール
 
 1. リポジトリをクローンします：
 
 ```bash
-git clone https://github.com/bravesoft-inc/internship-challenge.git
-cd internship-challenge
+git clone https://github.com/bravesoft-inc/internship-challenge-with-gemini.git
+cd internship-challenge-with-gemini
 ```
 
-2. Docker コンテナを起動します：
+2. 利用可能なコマンドを確認：
 
 ```bash
-docker-compose up -d
+make help
 ```
 
-3. バックエンドのセットアップ：
+3. 初回セットアップ（推奨）：
 
 ```bash
-# コンテナ内で実行
-docker compose exec backend bash
-
-# テスト環境用データベースの初期化（1,000件のデータを生成）
-php artisan app:init-database-test
-
-# 本番環境用データベースの初期化（100万件のデータを生成）
-php artisan app:init-database-production
+make setup
 ```
+
+このコマンドで以下が自動実行されます：
+- Docker環境のビルドと起動
+- テスト用データベースの初期化（1,000件のデータ生成）
 
 4. アプリケーションにアクセス：
 
 - フロントエンド: http://localhost:3000
 - バックエンドAPI: http://localhost:8000/api
+
+## 主要なMakeコマンド
+
+| コマンド | 説明 |
+|---------|------|
+| `make setup` | 初回セットアップ（Docker環境構築 + データベース初期化） |
+| `make start` | Docker環境を起動 |
+| `make stop` | Docker環境を停止 |
+| `make reset-db` | データベースをリセット（テスト/本番環境選択可能） |
+| `make gemini` | Geminiを起動（Yoloモード選択可能） |
+| `make backend` | バックエンドコンテナのbashシェルに接続 |
+| `make frontend` | フロントエンドコンテナのbashシェルに接続 |
+| `make cleanup` | Docker環境を完全にクリーンアップ |
+
+### データベースの初期化
+
+データベースをリセットしたい場合：
+
+```bash
+make reset-db
+```
+
+実行時に以下を選択できます：
+- **テスト環境用**: 1,000件のデータを生成（開発・テスト用）
+- **本番環境用**: 100万件のデータを生成（パフォーマンステスト用）
 
 ## 課題内容
 

@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   db:
     image: mysql:8.0
@@ -36,7 +34,6 @@ services:
       - internship-challenge-network
     command: >
       bash -c "composer install &&
-               php artisan key:generate --force &&
                php artisan migrate --force &&
                php artisan serve --host=0.0.0.0 --port=8000"
 
@@ -58,6 +55,17 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000/api
     command: npm run dev
+
+  gemini:
+    build:
+      context: ./gemini
+      dockerfile: Dockerfile
+    container_name: internship-challenge-gemini
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/app
 
 networks:
   internship-challenge-network:
